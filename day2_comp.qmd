@@ -7,4 +7,171 @@ execute:
   message: false
 ---
 
-## 
+```{r}
+library(tidyverse)
+```
+
+## Vectors
+
+```{r}
+#create vector
+dogs <- c("teddy", "khora", "waffle", "banjo", "tallie", "thistle")
+
+#check class
+class(dogs)
+```
+
+```{r}
+cats <- c("creamsicle wolf", 14.2, 3L)
+class(cats)
+```
+
+```{r}
+# How to get more information on the data type. 
+years <- c(20, 40, 16, 2)
+class(years)
+typeof(years) #typeof give more info about the specific data type compared to class. 
+
+```
+
+Asking a question about a vector
+
+```{r}
+# I want to do a conditional check
+#is. <<< asks questions  " is this THIS"
+#as.<<< gives a command "make this THIS"
+
+is.numeric(years)
+is.character(years) #is the years vector character
+```
+
+```{r}
+#creating a named vector
+
+dog_food <- c(teddy = "purina", khora = "alpo", waffle = "fancy feast")
+dog_food
+
+dog_food[2]
+
+dog_food["khora"] #looks for the name of the element rather than the position
+
+
+```
+
+```{r}
+cars <- c("blue", "orange", "white")
+cars[1]
+
+i <- seq(1:3) #vectors are mutable and can be changed directly
+cars[i]
+
+cars[3] <- "yellow"
+cars[3]
+```
+
+# Matrices
+
+```{r}
+fish_size <- matrix(c(12, 14, 18, 22), 
+                    ncol = 2,
+                    nrow = 2, 
+                    byrow = FALSE)
+class(fish_size)
+#Example of indexing
+typeof(fish_size) #tells the type of data stored in the matrix
+
+fish_size[1,1]
+fish_size[2,1]
+
+#what happens if we create a matrix with different types of data?
+
+fish_type <-  matrix(c(12, 14L, 18, "trout"), 
+                    ncol = 2,
+                    nrow = 2, 
+                    byrow = FALSE)
+class(fish_type)
+typeof(fish_type)
+
+fish_size[2,]
+fish_size[,2]
+```
+
+# Lists
+
+-   A list combines vectors that can be of different lengths and types
+
+```{r}
+# common for model outputs
+urchins <- list("blue", c(1, 2, 3), c("a cat", "a dog"), 5L)
+
+urchins[[3]] # a single set of brackets will return the data as a list not a vector.
+
+ex_1 <- urchins[3]
+ex_2 <- urchins[[3]]
+
+ex_1[1]
+ex_2[1]
+```
+
+## Make a named list
+
+```{r}
+#use equal sign inside the function and assignment operator outside the function.
+tacos <- list(topping = c("onion", "cilantro", "guac"),
+              filling = c("beans", "meat", "veggies"),
+              price = c(6.75, 8.25, 9.50))
+
+tacos
+#indexing list elements by name
+tacos$topping #gets me a vector
+tacos$filling[2]
+```
+
+read r package, parsenumber() function, can pull out only numbers
+
+```{r}
+a <- c(1, 2, 3)
+b <- c(3, 4, 5)
+
+myttest <- t.test(a,b)
+myttest
+class(myttest)
+myttest$p.value
+```
+
+if something is stored as a list and I want to write about that thing
+
+The price of a veggie burrito with guac is `r tacos$price[2] + tacos$price[3]`
+
+# Moving on to data frames
+
+```{r}
+#Method 1: make vectors first then combine in df
+topping <- c("onion", "cilantro", "guac")
+filling <- c("beans", "meat", "veggie")
+price <- c(6.75, 8.25, 9.50)
+
+taco_df <- data.frame(topping, filling, price)
+taco_df
+
+class(taco_df)
+
+#method 2: include the vectors in the data.frame() function
+
+taco_df_2 <- data.frame(topping = c("sour cream", "salsa", "cheese"),
+                        filling = c("chicken", "cheese", "cabbage"),
+                        price = c(12.50, 13.75, 15.00))
+
+#method 3: using tribble
+
+taco_df_3 <- tribble(
+  ~topping, ~filling, ~price, #the ~ sets the column headers, the whole function allows you to write it out the data how it would appear. 
+  "avacado", "steak", 13.25,
+  "radish", "fish", 10.40,
+  "salsa", "veggies", 9.75
+)
+taco_df_3
+#also the tribble returns some additional information compared to the data.frame().
+
+taco_df_3$price[3]
+```
